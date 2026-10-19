@@ -47,8 +47,8 @@ export function useNarrationFunctions() {
             }
             return narration
                 .continue(gameProps)
-                .then(() => {
-                    gameProps.invalidateInterfaceData();
+                .then(async () => {
+                    await gameProps.invalidateInterfaceData();
                     GameStatus.setLoading(false);
                 })
                 .catch((e) => {
@@ -67,9 +67,9 @@ export function useNarrationFunctions() {
         GameStatus.setLoading(true);
         return stepHistory
             .back(gameProps)
-            .then(() => {
+            .then(async () => {
                 GameStatus.setLoading(false);
-                gameProps.invalidateInterfaceData();
+                await gameProps.invalidateInterfaceData();
             })
             .catch((e) => {
                 GameStatus.setLoading(false);
@@ -83,8 +83,8 @@ export function useNarrationFunctions() {
             GameStatus.setLoading(true);
             return narration.choices
                 .select(item, gameProps)
-                .then(() => {
-                    gameProps.invalidateInterfaceData();
+                .then(async () => {
+                    await gameProps.invalidateInterfaceData();
                     GameStatus.setLoading(false);
                 })
                 .catch((e) => {
@@ -111,8 +111,8 @@ export function useNarrationFunctions() {
             GameStatus.setLoading(true);
             return narration
                 .jump(label, { ...gameProps, ...props } as StepLabelPropsType<T>)
-                .then((result) => {
-                    gameProps.invalidateInterfaceData();
+                .then(async (result) => {
+                    await gameProps.invalidateInterfaceData();
                     GameStatus.setLoading(false);
                     return result;
                 })
@@ -130,8 +130,8 @@ export function useNarrationFunctions() {
             GameStatus.setLoading(true);
             return narration
                 .call(label, { ...gameProps, ...props } as StepLabelPropsType<T>)
-                .then((result) => {
-                    gameProps.invalidateInterfaceData();
+                .then(async (result) => {
+                    await gameProps.invalidateInterfaceData();
                     GameStatus.setLoading(false);
                     return result;
                 })
