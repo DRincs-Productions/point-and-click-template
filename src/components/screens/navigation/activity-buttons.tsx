@@ -1,3 +1,4 @@
+import { useNqtrFunctions } from "@/lib/hooks/nqtr-hooks";
 import {
     Avatar,
     AvatarFallback,
@@ -17,6 +18,7 @@ import type { CharacterInterface } from "@drincs/pixi-vn";
 import { isValidElement, type ComponentProps, type ReactElement } from "react";
 
 export function ActivityButton({ id }: { id: string }) {
+    const { runActivity } = useNqtrFunctions();
     const gameProps = useGameProps();
     const { uiTransition: t } = gameProps;
     const { data: activity } = useQueryActivity(id);
@@ -26,7 +28,7 @@ export function ActivityButton({ id }: { id: string }) {
     return (
         <ActivityBaseButton
             disabled={activity.disabled}
-            onClick={() => activity.run(gameProps)}
+            onClick={() => runActivity(id)}
             ariaLabel={t(activity.name)}
             image={activity.icon}
         />
@@ -34,6 +36,7 @@ export function ActivityButton({ id }: { id: string }) {
 }
 
 export function CommitmentButton({ id }: { id: string }) {
+    const { runCommitment } = useNqtrFunctions();
     const gameProps = useGameProps();
     const { uiTransition: t } = gameProps;
     const { data: commitment } = useQueryCommitment(id);
@@ -43,7 +46,7 @@ export function CommitmentButton({ id }: { id: string }) {
     return (
         <ActivityBaseButton
             disabled={commitment.disabled}
-            onClick={() => commitment.run(gameProps)}
+            onClick={() => runCommitment(id)}
             ariaLabel={t(commitment.name)}
             image={commitment.icon}
             characters={commitment.characters}
