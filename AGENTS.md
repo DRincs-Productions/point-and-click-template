@@ -1,10 +1,13 @@
 # Project instructions
 
-This repository is a template for a visual novel built with **Pixi’VN** and **React**. These instructions are intentionally general and can be used as they are; developers may adapt them to their game whenever useful.
+This repository is a template for a **point & click adventure** built with **Pixi’VN**, **NQTR**, and **React**. These instructions are intentionally general and can be used as they are; developers may adapt them to their game whenever useful.
+
+Compared with a classic visual novel template, this one adds navigation screens based on the point & click approach: the player explores maps, locations, and rooms, interacts with clickable elements (locations, activities, commitments, characters), and the narrative (labels and dialogue) is triggered by those interactions. Time, routines, and navigation are handled by **NQTR**.
 
 ## Engine
 
 - [Pixi’VN documentation](https://pixi-vn.com/)
+- [NQTR documentation](https://pixi-vn.com/nqtr/)
 
 Consult the official Pixi’VN documentation when implementing or changing engine features.
 
@@ -17,6 +20,7 @@ Application code lives in `src/`.
 - `src/components/`: all other React components, including screens, menus, dialogs, and providers.
 - `src/content/`: TypeScript modules that define and register game content and elements, such as characters, labels/scenes, and related logic. Follow the registration flow configured in `vite.config.ts` and the Pixi’VN plugin files.
 - `src/content/labels/`: labels (scenes) of the game, one module per label or group of related labels.
+- `src/content/quest/`: quests of the game. It is recommended to create one file for each quest.
 - `src/locales/`: translation files. Keep keys consistent across supported languages and add translations to the existing i18n configuration.
 - `src/routes/`: game routes and screens managed by the router. Handle generated router files according to the generator configuration in the project.
 - `docs/`: game documentation. This directory may initially be empty; organize its contents into subdirectories by topic, such as story and endings, objectives and missions, characters, locations, items, and minigames. Do not document assets here; manage them in their dedicated directories and manifests.
@@ -51,6 +55,10 @@ The `.vscode/` directory contains formatting settings, recommended extensions, t
 - For UI made of elements that are not drawings coming from media (text, buttons, layouts, menus, dialogs, forms), always use **React** (with the existing shadcn/ui components when suitable).
 - For images (assets), use **PixiJS** (`pixi.js`) directly. Do not use Pixi’VN for UI: Pixi’VN is for the narrative canvas, while UI rendering with PixiJS must go through `pixi.js` itself.
 - If `pixi.js` is used directly and is not yet a direct dependency of the project, add it to `package.json` first, before writing code that imports it.
+- NQTR elements (locations, activities, commitments, and similar) can be given a visual representation in the navigation screens through two distinct fields:
+  - `sprite`: the **PixiJS** element (for example a `Sprite` created with `pixi.js`, or a function returning it) or directly the **alias of the asset** to display. Use it for images coming from media.
+  - `icon`: a **React** element (or a function returning one). Use it for UI made of React components rather than media.
+  - Choose the field according to the rules above: media drawings go in `sprite`, everything else goes in `icon`. The accepted types are defined in `src/models/ui-elements.ts` and `src/nqtr.d.ts`.
 
 ## Verification and tools
 
@@ -59,6 +67,8 @@ Available scripts are defined in `package.json`. This template includes commands
 When available, use the **Chrome DevTools MCP server** to run or inspect the game in a browser, check console errors, and verify visible behavior. If it is unavailable, use the project’s local commands and clearly state any checks that could not be performed.
 
 ## Recommended skills
+
+Using the **NQTR skills** is strongly recommended, since the game relies on NQTR for maps, locations, rooms, activities, commitments, routines, and time. Choose the NQTR skill relevant to the area being changed, together with the Pixi’VN skills.
 
 Use the Pixi’VN skills available in the working environment when relevant. Choose the skill for the area being changed: project setup, narration, characters, canvas and transitions, assets, UI, audio, storage, saves, or history.
 
