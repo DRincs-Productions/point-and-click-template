@@ -14,7 +14,7 @@ export function useMapLayerSync() {
     const { data: { background, locations } = {} } = useQueryCurrentMap();
 
     useEffect(() => {
-        const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        const layer = canvas.layers.get(CANVAS_UI_LAYER_NAME);
         if (layer) {
             if (background) layer.addChild(background);
             locations?.forEach((location) => {
@@ -23,7 +23,7 @@ export function useMapLayerSync() {
         }
 
         return () => {
-            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
+            canvas.layers.get(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
     }, [background, locations]);
 
@@ -45,7 +45,7 @@ export function useRoomLayerSync() {
     useEffect(() => {
         if (!id || id !== navigator.currentRoomId) return;
 
-        const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        const layer = canvas.layers.get(CANVAS_UI_LAYER_NAME);
         if (layer) {
             if (background) layer.addChild(background);
 
@@ -68,7 +68,7 @@ export function useRoomLayerSync() {
         }
 
         return () => {
-            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
+            canvas.layers.get(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
     }, [id, background, automaticFunctions, gameProps, activities, routineIcons]);
 
@@ -82,7 +82,7 @@ export default function useTimeTracker() {
 
     const sleep = useCallback(
         (newDayHour: number, props: OnRunProps) => {
-            if (storage.getFlag(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
+            if (storage.flags.get(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
                 toast(t("cant_sleep_now"));
                 return false;
             }
@@ -97,7 +97,7 @@ export default function useTimeTracker() {
 
     const wait = useCallback(
         (timeSpent: number) => {
-            if (storage.getFlag(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
+            if (storage.flags.get(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
                 toast(t("cant_sleep_now"));
                 return false;
             }

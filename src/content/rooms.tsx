@@ -70,7 +70,6 @@ export const gymRoom = new Room("gym_room", gym, {
 
 export const classRoom = new Room("class_room", school, {
     name: "School",
-    background: "",
     routine: ["alice_go_school"],
 });
 

@@ -126,7 +126,7 @@ const CAN_GO_NEXT_USE_QUERY_KEY = "can_go_next_use_query_key";
 export function useQueryCanGoNext() {
     return useQuery({
         queryKey: [NARRATION_DATA_USE_QUERY_KEY, CAN_GO_NEXT_USE_QUERY_KEY],
-        queryFn: async () => narration.canContinue && !narration.isRequiredInput,
+        queryFn: async () => narration.canContinue && !narration.input.isRequired,
     });
 }
 

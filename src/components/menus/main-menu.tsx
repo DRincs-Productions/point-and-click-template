@@ -117,7 +117,7 @@ export function MainMenu() {
     useEffect(() => {
         const bg = new ImageSprite({}, "images_main-menu");
         bg.load();
-        const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        const layer = canvas.layers.get(CANVAS_UI_LAYER_NAME);
         if (layer) {
             layer.addChild(bg);
         }
@@ -129,7 +129,7 @@ export function MainMenu() {
         firstItem?.focus();
 
         return () => {
-            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
+            canvas.layers.get(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
     }, []);
 

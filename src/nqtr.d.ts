@@ -115,7 +115,7 @@ declare module "@drincs/nqtr" {
         /**
          * The background of the room.
          */
-        readonly background: PixiUIProp;
+        readonly background?: PixiUIProp;
         /**
          * Whether is disabled.
          */

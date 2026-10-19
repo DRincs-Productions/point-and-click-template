@@ -18,7 +18,7 @@ export default class Room extends RoomStoredClass implements RoomInterface {
             name: string;
             disabled?: boolean | (() => boolean);
             hidden?: boolean | (() => boolean);
-            background: PixiUIParam<Room>;
+            background?: PixiUIParam<Room>;
             activities?: (ActivityInterface | ActivityIdType)[];
             routine?: (CommitmentInterface | CommitmentIdType)[];
             isEntrance?: boolean;
@@ -35,8 +35,8 @@ export default class Room extends RoomStoredClass implements RoomInterface {
         this.isEntrance = props.isEntrance || false;
     }
     readonly name: string;
-    private readonly _background: PixiUIParam<Room>;
-    get background(): PixiUIProp {
+    private readonly _background?: PixiUIParam<Room>;
+    get background(): PixiUIProp | undefined {
         const background = this._background;
         if (typeof background === "function") {
             return (runProps: OnRunProps) => background(this, runProps);
