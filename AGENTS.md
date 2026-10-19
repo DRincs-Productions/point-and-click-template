@@ -58,6 +58,7 @@ The `.vscode/` directory contains formatting settings, recommended extensions, t
 - NQTR elements (locations, activities, commitments, and similar) can be given a visual representation in the navigation screens through two distinct fields:
   - `sprite`: the **PixiJS** element (for example a `Sprite` created with `pixi.js`, or a function returning it) or directly the **alias of the asset** to display. Use it for images coming from media.
   - `icon`: a **React** element (or a function returning one). Use it for UI made of React components rather than media.
+  - `TimeSlotsImage` (`src/models/TimeSlotsImage.ts`): a model that picks the image according to the current NQTR time slot (morning, afternoon, evening, night). It is built with an object holding one asset alias per time slot, or with a single alias used for all of them (`new TimeSlotsImage({ morning, afternoon, evening, night })` or `new TimeSlotsImage("alias")`). Its `src` getter returns the alias for the current slot, read from `timeTracker`. It is accepted wherever an image is expected, such as `sprite`, `background`, and activity images, so use it for visuals that change during the day (for example room backgrounds, see `src/content/rooms.tsx`).
   - Choose the field according to the rules above: media drawings go in `sprite`, everything else goes in `icon`. The accepted types are defined in `src/models/ui-elements.ts` and `src/nqtr.d.ts`.
 
 ## Verification and tools
