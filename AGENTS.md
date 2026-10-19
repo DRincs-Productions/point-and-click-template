@@ -5,7 +5,6 @@ This repository is a template for a visual novel built with **Pixi’VN** and **
 ## Engine
 
 - [Pixi’VN documentation](https://pixi-vn.com/)
-- [Roves documentation](https://roves.pixi-vn.com/)
 
 Consult the official Pixi’VN documentation when implementing or changing engine features.
 
@@ -70,3 +69,7 @@ Skills are reference tools, not required repository dependencies; their availabi
 ## Distribution
 
 The game is intended to be distributed through **Roves**. See the [Roves documentation](https://roves.pixi-vn.com/) for up-to-date instructions on preparing and publishing the project.
+
+Releases are built by `.github/workflows/release.yml` (desktop, desktop + Steam, and mobile). To generate a release, create and push a tag matching `v*` (for example `git tag v1.0.0 && git push origin v1.0.0`). The workflow builds the game and attaches the bundles to the GitHub release with that tag.
+
+If an AI agent creates and pushes the tag, once it is pushed it must send the developer, in the chat, the link to the workflow run and to the release (for example `https://github.com/<owner>/<repo>/actions` and `https://github.com/<owner>/<repo>/releases/tag/<tag>`, with the real owner, repository and tag; `gh run list` and `gh release view <tag> --json url` can help find them), so the developer can reach the release without searching for it.
