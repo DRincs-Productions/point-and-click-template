@@ -30,7 +30,7 @@ export function useTestingBridge() {
                 return await startNewGame(label, props);
             },
             navigate: async (screen) => {
-                await gameProps.navigate({ to: screen });
+                await gameProps.navigate({ to: screen as never });
                 await gameProps.invalidateInterfaceData();
             },
             jump,
