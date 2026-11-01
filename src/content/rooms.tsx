@@ -1,5 +1,5 @@
 import { gym, mcHome, school } from "@/content/locations";
-import Room from "@/models/nqtr/Room";
+import Room from "@/models/Room";
 import TimeSlotsImage from "@/models/TimeSlotsImage";
 import { navigator, RegisteredRooms } from "@drincs/nqtr";
 
@@ -54,6 +54,7 @@ export const lounge = new Room("lounge", mcHome, {
 export const terrace = new Room("terrace", mcHome, {
     name: "Terrace",
     isEntrance: true,
+    sound: "garden-ambience",
     background: new TimeSlotsImage({
         morning: "location_terrace-0",
         afternoon: "location_terrace-1",
@@ -70,7 +71,6 @@ export const gymRoom = new Room("gym_room", gym, {
 
 export const classRoom = new Room("class_room", school, {
     name: "School",
-    background: "",
     routine: ["alice_go_school"],
 });
 

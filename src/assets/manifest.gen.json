@@ -1,3 +1,40 @@
 {
-  "bundles": []
+  "bundles": [
+    {
+      "name": "audio",
+      "assets": [
+        {
+          "alias": [
+            "audio_garden-ambience",
+            "garden-ambience"
+          ],
+          "src": [
+            "audio/garden-ambience-q5n4.mp3",
+            "audio/garden-ambience-jvAORw.ogg"
+          ],
+          "data": {
+            "tags": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "images",
+      "assets": [
+        {
+          "alias": [
+            "images_main-menu",
+            "main-menu"
+          ],
+          "src": [
+            "images/main-menu-QVRZMw.webp",
+            "images/main-menu-7bLsRQ.jpg"
+          ],
+          "data": {
+            "tags": {}
+          }
+        }
+      ]
+    }
+  ]
 }

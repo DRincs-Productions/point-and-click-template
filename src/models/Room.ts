@@ -1,3 +1,5 @@
+import type { PixiUIParam, PixiUIProp } from "@/models/ui-elements";
+import TimeSlotsSound from "@/models/TimeSlotsSound";
 import {
     type ActivityIdType,
     type ActivityInterface,
@@ -8,7 +10,7 @@ import {
     type RoomInterface,
     RoomStoredClass,
 } from "@drincs/nqtr";
-import type { PixiUIParam, PixiUIProp } from "./ui-elements";
+import type { AssetAliasIdType } from "@drincs/pixi-vn";
 
 export default class Room extends RoomStoredClass implements RoomInterface {
     constructor(
@@ -18,9 +20,10 @@ export default class Room extends RoomStoredClass implements RoomInterface {
             name: string;
             disabled?: boolean | (() => boolean);
             hidden?: boolean | (() => boolean);
-            background: PixiUIParam<Room>;
+            background?: PixiUIParam<Room>;
             activities?: (ActivityInterface | ActivityIdType)[];
             routine?: (CommitmentInterface | CommitmentIdType)[];
+            sound?: AssetAliasIdType | TimeSlotsSound;
             isEntrance?: boolean;
         },
     ) {
@@ -32,11 +35,13 @@ export default class Room extends RoomStoredClass implements RoomInterface {
         this._defaultDisabled = props.disabled || false;
         this._defaultHidden = props.hidden || false;
         this._background = props.background;
+        this.sound = props.sound;
         this.isEntrance = props.isEntrance || false;
     }
     readonly name: string;
-    private readonly _background: PixiUIParam<Room>;
-    get background(): PixiUIProp {
+    private readonly _background?: PixiUIParam<Room>;
+    readonly sound?: AssetAliasIdType | TimeSlotsSound;
+    get background(): PixiUIProp | undefined {
         const background = this._background;
         if (typeof background === "function") {
             return (runProps: OnRunProps) => background(this, runProps);

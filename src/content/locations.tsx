@@ -1,5 +1,5 @@
 import { mainMap } from "@/content/maps";
-import Location from "@/models/nqtr/Location";
+import Location from "@/models/Location";
 import { navigator, RegisteredLocations } from "@drincs/nqtr";
 import { Assets, Sprite, type Texture } from "@drincs/pixi-vn/pixi.js";
 
