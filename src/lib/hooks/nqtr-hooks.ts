@@ -1,12 +1,23 @@
-import { CANVAS_UI_LAYER_NAME, INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
+import { BGM_CHANNEL_NAME, CANVAS_UI_LAYER_NAME, INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryCurrentMap } from "@/lib/query/map-query";
 import { useQueryCurrentRoom } from "@/lib/query/room-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
-import { navigator, questsNotebook, routine, timeTracker, type OnRunProps } from "@drincs/nqtr";
-import { canvas, storage } from "@drincs/pixi-vn";
+import {
+    navigator,
+    questsNotebook,
+    routine,
+    timeTracker,
+    RegisteredRooms,
+    RegisteredActivities,
+    RegisteredCommitments,
+    RegisteredQuests,
+    type NqtrTestingActions,
+    type OnRunProps,
+} from "@drincs/nqtr";
+import { canvas, sound, storage } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -14,7 +25,7 @@ export function useMapLayerSync() {
     const { data: { background, locations } = {} } = useQueryCurrentMap();
 
     useEffect(() => {
-        const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        const layer = canvas.layers.get(CANVAS_UI_LAYER_NAME);
         if (layer) {
             if (background) layer.addChild(background);
             locations?.forEach((location) => {
@@ -23,7 +34,7 @@ export function useMapLayerSync() {
         }
 
         return () => {
-            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
+            canvas.layers.get(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
     }, [background, locations]);
 
@@ -33,7 +44,7 @@ export function useMapLayerSync() {
 export function useRoomLayerSync() {
     const {
         data: {
-            room: { automaticFunctions = [], id } = {},
+            room: { automaticFunctions = [], id, sound: roomSound } = {},
             background,
             activities,
             routine: routineIcons,
@@ -41,11 +52,37 @@ export function useRoomLayerSync() {
     } = useQueryCurrentRoom();
     const gameProps = useGameProps();
     const autoRunning = useRef(false);
+    const soundAlias = typeof roomSound === "string" ? roomSound : roomSound?.src;
+
+    useEffect(() => {
+        if (!id || id !== navigator.currentRoomId || !soundAlias) return;
+
+        let cancelled = false;
+        let player: Awaited<ReturnType<typeof sound.unsaved.playTransient>> | undefined;
+
+        sound.unsaved
+            .playTransient(soundAlias, { channel: BGM_CHANNEL_NAME, loop: true })
+            .then((startedPlayer) => {
+                if (cancelled) {
+                    startedPlayer.stop();
+                    return;
+                }
+                player = startedPlayer;
+            })
+            .catch((error: unknown) => {
+                console.error(`Failed to play room ambience for "${id}"`, error);
+            });
+
+        return () => {
+            cancelled = true;
+            player?.stop();
+        };
+    }, [id, soundAlias]);
 
     useEffect(() => {
         if (!id || id !== navigator.currentRoomId) return;
 
-        const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        const layer = canvas.layers.get(CANVAS_UI_LAYER_NAME);
         if (layer) {
             if (background) layer.addChild(background);
 
@@ -68,7 +105,7 @@ export function useRoomLayerSync() {
         }
 
         return () => {
-            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
+            canvas.layers.get(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
     }, [id, background, automaticFunctions, gameProps, activities, routineIcons]);
 
@@ -82,7 +119,7 @@ export default function useTimeTracker() {
 
     const sleep = useCallback(
         (newDayHour: number, props: OnRunProps) => {
-            if (storage.getFlag(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
+            if (storage.flags.get(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
                 toast(t("cant_sleep_now"));
                 return false;
             }
@@ -97,7 +134,7 @@ export default function useTimeTracker() {
 
     const wait = useCallback(
         (timeSpent: number) => {
-            if (storage.getFlag(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
+            if (storage.flags.get(NOT_CAN_SPEND_TIME_FLAG_KEY)) {
                 toast(t("cant_sleep_now"));
                 return false;
             }
@@ -118,4 +155,81 @@ export default function useTimeTracker() {
         sleep,
         wait,
     };
+}
+
+/** Shared UI actions used by components and the development testing bridge. */
+export function useNqtrFunctions(): NqtrTestingActions {
+    const props = useGameProps();
+    return useMemo(() => {
+        const requireItem = <T>(
+            registry: { has(id: string): boolean; get(id: string): T | undefined },
+            id: string,
+        ): T => {
+            if (!registry.has(id)) throw new Error(`Unknown NQTR id: ${id}`);
+            const value = registry.get(id);
+            if (!value) throw new Error(`Unavailable NQTR id: ${id}`);
+            return value;
+        };
+        const room = (id: string) => requireItem(RegisteredRooms, id);
+        const activity = (id: string) => requireItem(RegisteredActivities, id);
+        const commitment = (id: string) => requireItem(RegisteredCommitments, id);
+        const quest = (id: string) => requireItem(RegisteredQuests, id);
+        const perform = async <T>(action: () => T | Promise<T>, refresh = true): Promise<T> => {
+            GameStatus.setLoading(true);
+            try {
+                const result = await action();
+                if (refresh) await props.invalidateInterfaceData();
+                return result;
+            } finally {
+                GameStatus.setLoading(false);
+            }
+        };
+        const available = (
+            item: { id: string; disabled: boolean; hidden: boolean },
+            items: { id: string }[],
+        ) => {
+            if (item.disabled || item.hidden || !items.some((value) => value.id === item.id)) {
+                throw new Error(`NQTR item is unavailable in the current room: ${item.id}`);
+            }
+        };
+        return {
+            goToRoom: (id) =>
+                perform(async () => {
+                    const target = room(id);
+                    if (target.disabled || target.hidden)
+                        throw new Error(`Room is unavailable: ${id}`);
+                    navigator.currentRoom = target;
+                    await props.navigate({ to: "/game/navigation" });
+                }),
+            increaseTime: (amount) =>
+                perform(() => {
+                    timeTracker.increaseTime(amount);
+                }),
+            increaseDate: (days, hour) =>
+                perform(() => {
+                    timeTracker.increaseDate(days, hour);
+                }),
+            addActivity: (id, activityId) =>
+                perform(() => room(id).addActivity(activity(activityId))),
+            removeActivity: (id, activityId) =>
+                perform(() => room(id).removeActivity(activity(activityId))),
+            addCommitment: (id, commitmentId) =>
+                perform(() => room(id).addCommitment(commitment(commitmentId))),
+            removeRoutine: (id) => perform(() => routine.remove(commitment(id))),
+            runActivity: (id) =>
+                perform(() => {
+                    const item = activity(id);
+                    available(item, navigator.currentRoom?.activities ?? []);
+                    return item.run(props);
+                }, false),
+            runCommitment: (id) =>
+                perform(() => {
+                    const item = commitment(id);
+                    available(item, navigator.currentRoom?.routine ?? []);
+                    return item.run(props);
+                }, false),
+            startQuest: (id) => perform(() => quest(id).start(props)),
+            continueQuest: (id) => perform(() => quest(id).continue(props)),
+        };
+    }, [props]);
 }

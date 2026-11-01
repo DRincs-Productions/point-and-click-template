@@ -1,4 +1,4 @@
-import MapClass from "@/models/nqtr/Map";
+import MapClass from "@/models/Map";
 import TimeSlotsImage from "@/models/TimeSlotsImage";
 import { RegisteredMaps } from "@drincs/nqtr";
 

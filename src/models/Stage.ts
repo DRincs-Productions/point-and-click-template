@@ -5,7 +5,7 @@ import {
     StageStoredClass,
     type StageStoredClassProps,
 } from "@drincs/nqtr";
-import type { StageFlags } from "../../nqtr";
+import type { StageFlags } from "../nqtr";
 
 export default class Stage extends StageStoredClass implements StageInterface {
     constructor(

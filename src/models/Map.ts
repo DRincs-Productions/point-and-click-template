@@ -1,4 +1,4 @@
-import type { PixiUIParam, PixiUIProp } from "@/models/nqtr/ui-elements";
+import type { PixiUIParam, PixiUIProp } from "@/models/ui-elements";
 import type { NeighboringMaps } from "@/nqtr";
 import {
     type ActivityInterface,
