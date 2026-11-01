@@ -9,7 +9,7 @@ import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryLastSave } from "@/lib/query/save-query";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn } from "@/lib/utils";
-import { loadRefreshSave, loadSave } from "@/lib/utils/save-utility";
+import { autoExit, save } from "@/lib/utils/save-utility";
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -220,7 +220,7 @@ export function ContinueMenuButton({
         if (!lastSave) return;
         setLoading(true);
         onLoadingChange?.(true);
-        (hasRefreshSave ? loadRefreshSave() : loadSave(lastSave))
+        (hasRefreshSave ? autoExit.load() : save.restore(lastSave))
             .then(() => queryClient.invalidateQueries())
             .catch((e) => {
                 toast.error(t("fail_load"));
