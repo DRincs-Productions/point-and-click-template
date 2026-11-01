@@ -54,6 +54,7 @@ export const lounge = new Room("lounge", mcHome, {
 export const terrace = new Room("terrace", mcHome, {
     name: "Terrace",
     isEntrance: true,
+    sound: "garden-ambience",
     background: new TimeSlotsImage({
         morning: "location_terrace-0",
         afternoon: "location_terrace-1",

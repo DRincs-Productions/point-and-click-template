@@ -1,5 +1,7 @@
 import type { PixiUIProp, ReactUIProp } from "@/models/ui-elements";
+import type TimeSlotsSound from "@/models/TimeSlotsSound";
 import type { StepLabelProps } from "@drincs/pixi-vn";
+import type { AssetAliasIdType } from "@drincs/pixi-vn";
 
 declare module "@drincs/nqtr" {
     interface OnRunProps extends StepLabelProps {}
@@ -116,6 +118,8 @@ declare module "@drincs/nqtr" {
          * The background of the room.
          */
         readonly background?: PixiUIProp;
+        /** The room ambience asset alias, optionally selected by time slot. */
+        readonly sound?: AssetAliasIdType | TimeSlotsSound;
         /**
          * Whether is disabled.
          */

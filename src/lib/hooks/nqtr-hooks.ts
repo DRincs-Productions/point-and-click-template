@@ -1,4 +1,4 @@
-import { CANVAS_UI_LAYER_NAME, INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
+import { BGM_CHANNEL_NAME, CANVAS_UI_LAYER_NAME, INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryCurrentMap } from "@/lib/query/map-query";
 import { useQueryCurrentRoom } from "@/lib/query/room-query";
@@ -15,7 +15,7 @@ import {
     type NqtrTestingActions,
     type OnRunProps,
 } from "@drincs/nqtr";
-import { canvas, storage } from "@drincs/pixi-vn";
+import { canvas, sound, storage } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,7 @@ export function useMapLayerSync() {
 export function useRoomLayerSync() {
     const {
         data: {
-            room: { automaticFunctions = [], id } = {},
+            room: { automaticFunctions = [], id, sound: roomSound } = {},
             background,
             activities,
             routine: routineIcons,
@@ -52,6 +52,32 @@ export function useRoomLayerSync() {
     } = useQueryCurrentRoom();
     const gameProps = useGameProps();
     const autoRunning = useRef(false);
+    const soundAlias = typeof roomSound === "string" ? roomSound : roomSound?.src;
+
+    useEffect(() => {
+        if (!id || id !== navigator.currentRoomId || !soundAlias) return;
+
+        let cancelled = false;
+        let player: Awaited<ReturnType<typeof sound.unsaved.playTransient>> | undefined;
+
+        sound.unsaved
+            .playTransient(soundAlias, { channel: BGM_CHANNEL_NAME, loop: true })
+            .then((startedPlayer) => {
+                if (cancelled) {
+                    startedPlayer.stop();
+                    return;
+                }
+                player = startedPlayer;
+            })
+            .catch((error: unknown) => {
+                console.error(`Failed to play room ambience for "${id}"`, error);
+            });
+
+        return () => {
+            cancelled = true;
+            player?.stop();
+        };
+    }, [id, soundAlias]);
 
     useEffect(() => {
         if (!id || id !== navigator.currentRoomId) return;
