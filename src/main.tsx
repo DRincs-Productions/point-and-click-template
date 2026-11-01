@@ -58,7 +58,7 @@ Game.init(body, {
 });
 
 Game.onEnd(async ({ navigate }) => {
-    const isTheEnd = storage.getFlag("is_the_end");
+    const isTheEnd = storage.flags.get("is_the_end");
     if (isTheEnd) {
         Game.clear();
         navigate({ to: "/" });

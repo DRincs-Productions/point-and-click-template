@@ -1,4 +1,5 @@
 import { timeTracker } from "@drincs/nqtr";
+import type { AssetAliasIdType } from "@drincs/pixi-vn";
 
 enum TimeSlotsEnumNumber {
     MORNING = 0,
@@ -9,7 +10,14 @@ enum TimeSlotsEnumNumber {
 
 export default class TimeSlotsImage {
     constructor(
-        data: { morning: string; afternoon: string; evening: string; night: string } | string,
+        data:
+            | {
+                  morning: AssetAliasIdType;
+                  afternoon: AssetAliasIdType;
+                  evening: AssetAliasIdType;
+                  night: AssetAliasIdType;
+              }
+            | AssetAliasIdType,
     ) {
         if (typeof data === "string") {
             this.morning = data;
@@ -23,7 +31,7 @@ export default class TimeSlotsImage {
         this.evening = data.evening;
         this.night = data.night;
     }
-    get src(): string {
+    get src(): AssetAliasIdType {
         if (timeTracker.currentTimeSlot === TimeSlotsEnumNumber.MORNING) {
             return this.morning;
         } else if (timeTracker.currentTimeSlot === TimeSlotsEnumNumber.EVENING) {
@@ -33,8 +41,8 @@ export default class TimeSlotsImage {
         }
         return this.afternoon;
     }
-    morning: string;
-    afternoon: string;
-    evening: string;
-    night: string;
+    morning: AssetAliasIdType;
+    afternoon: AssetAliasIdType;
+    evening: AssetAliasIdType;
+    night: AssetAliasIdType;
 }

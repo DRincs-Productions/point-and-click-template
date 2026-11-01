@@ -1,5 +1,5 @@
 import { ActivityBaseButton } from "@/components/screens/navigation/activity-buttons";
-import Commitment from "@/models/nqtr/Commitment";
+import Commitment from "@/models/Commitment";
 import TimeSlotsImage from "@/models/TimeSlotsImage";
 import { RegisteredCommitments, timeTracker } from "@drincs/nqtr";
 import { narration } from "@drincs/pixi-vn";

@@ -2,7 +2,7 @@ import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryTime } from "@/lib/query/time-query";
 import { normalizePixiElement } from "@/lib/utils/ui-utility";
-import type { PixiUIProp } from "@/models/nqtr/ui-elements";
+import type { PixiUIProp } from "@/models/ui-elements";
 import { navigator, RegisteredRooms } from "@drincs/nqtr";
 import { Assets, ImageSprite } from "@drincs/pixi-vn";
 import type { ContainerChild } from "@drincs/pixi-vn/pixi.js";
@@ -42,17 +42,15 @@ export function useQueryRoom(id?: string) {
             const routine = room.routine;
             const routineBackground = room.routine.find((c) => c.background)?.background;
 
-            let background = await normalizePixiElement(
-                routineBackground || room.background,
-                gameProps,
-            );
+            const backgroundSource = routineBackground || room.background;
+            let background = backgroundSource ? await normalizePixiElement(backgroundSource, gameProps) : undefined;
             if (typeof background === "string") {
                 const sprite = new ImageSprite({}, background);
                 await sprite.load();
                 background = sprite;
             }
 
-            const icon = await normalizePixiElement(room.background, gameProps);
+            const icon = room.background ? await normalizePixiElement(room.background, gameProps) : undefined;
 
             const activitiesIcons = await loadIcons(room.activities);
             const routineIcons = await loadIcons(routine);

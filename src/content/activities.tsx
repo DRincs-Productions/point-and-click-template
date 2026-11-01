@@ -1,5 +1,5 @@
 import { ActivityBaseButton } from "@/components/screens/navigation/activity-buttons";
-import Activity from "@/models/nqtr/Activity";
+import Activity from "@/models/Activity";
 import { RegisteredActivities, timeTracker } from "@drincs/nqtr";
 import { narration } from "@drincs/pixi-vn";
 import { Bed, Package, ShoppingCart } from "lucide-react";

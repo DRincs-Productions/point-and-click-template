@@ -25,7 +25,7 @@ declare module "@drincs/pixi-vn/narration" {
 declare module "@drincs/pixi-vn/canvas" {
     interface PixivnBundleIds {
         "audio": never;
-        "/": never;
+        "images": never;
         "main_map": never;
         "nightcity_map": never;
         "mc_room": never;
@@ -38,7 +38,10 @@ declare module "@drincs/pixi-vn/canvas" {
         "alice": never;
     }
     interface PixivnAssetAliasIds {
-        "background_main_menu": never;
+        "audio_garden-ambience": never;
+        "garden-ambience": never;
+        "images_main-menu": never;
+        "main-menu": never;
         "map-0": never;
         "map-1": never;
         "map-2": never;
@@ -77,7 +80,7 @@ export const characterIds = ["mc","alice"] as const;
 export const characterIdsEnum = {"mc":"mc","alice":"alice"} as const;
 export const labelIds = ["sleep_1_hour","nap_1_hour","sleep","nap","start","order_product","talk_alice_sleep_result","talk_alice_sleep","talk_alice","alice_talk_menu","take_product"] as const;
 export const labelIdsEnum = {"sleep_1_hour":"sleep_1_hour","nap_1_hour":"nap_1_hour","sleep":"sleep","nap":"nap","start":"start","order_product":"order_product","talk_alice_sleep_result":"talk_alice_sleep_result","talk_alice_sleep":"talk_alice_sleep","talk_alice":"talk_alice","alice_talk_menu":"alice_talk_menu","take_product":"take_product"} as const;
-export const bundleIds = ["audio","/","main_map","nightcity_map","mc_room","alice_room","ann_room","bathroom","lounge","terrace","gym_room","alice"] as const;
-export const bundleIdsEnum = {"audio":"audio","/":"/","main_map":"main_map","nightcity_map":"nightcity_map","mc_room":"mc_room","alice_room":"alice_room","ann_room":"ann_room","bathroom":"bathroom","lounge":"lounge","terrace":"terrace","gym_room":"gym_room","alice":"alice"} as const;
-export const assetAliasIds = ["background_main_menu","map-0","map-1","map-2","map-3","icon_location_home","icon_location_gym","map-nightcity","location_myroom-0","location_myroom-1","location_myroom-2","location_myroom-3","location_aliceroom-0","location_aliceroom-1","location_aliceroom-2","location_aliceroom-3","location_annroom-0","location_annroom-1","location_annroom-2","location_annroom-3","location_bathroom","location_lounge-0","location_lounge-1","location_lounge-2","location_lounge-3","location_terrace-0","location_terrace-1","location_terrace-2","location_terrace-3","location_gym","alice_terrace0A","alice_terrace0At","alice_roomsleep0A"] as const;
-export const assetAliasIdsEnum = {"background_main_menu":"background_main_menu","map-0":"map-0","map-1":"map-1","map-2":"map-2","map-3":"map-3","icon_location_home":"icon_location_home","icon_location_gym":"icon_location_gym","map-nightcity":"map-nightcity","location_myroom-0":"location_myroom-0","location_myroom-1":"location_myroom-1","location_myroom-2":"location_myroom-2","location_myroom-3":"location_myroom-3","location_aliceroom-0":"location_aliceroom-0","location_aliceroom-1":"location_aliceroom-1","location_aliceroom-2":"location_aliceroom-2","location_aliceroom-3":"location_aliceroom-3","location_annroom-0":"location_annroom-0","location_annroom-1":"location_annroom-1","location_annroom-2":"location_annroom-2","location_annroom-3":"location_annroom-3","location_bathroom":"location_bathroom","location_lounge-0":"location_lounge-0","location_lounge-1":"location_lounge-1","location_lounge-2":"location_lounge-2","location_lounge-3":"location_lounge-3","location_terrace-0":"location_terrace-0","location_terrace-1":"location_terrace-1","location_terrace-2":"location_terrace-2","location_terrace-3":"location_terrace-3","location_gym":"location_gym","alice_terrace0A":"alice_terrace0A","alice_terrace0At":"alice_terrace0At","alice_roomsleep0A":"alice_roomsleep0A"} as const;
+export const bundleIds = ["audio","images","main_map","nightcity_map","mc_room","alice_room","ann_room","bathroom","lounge","terrace","gym_room","alice"] as const;
+export const bundleIdsEnum = {"audio":"audio","images":"images","main_map":"main_map","nightcity_map":"nightcity_map","mc_room":"mc_room","alice_room":"alice_room","ann_room":"ann_room","bathroom":"bathroom","lounge":"lounge","terrace":"terrace","gym_room":"gym_room","alice":"alice"} as const;
+export const assetAliasIds = ["audio_garden-ambience","garden-ambience","images_main-menu","main-menu","map-0","map-1","map-2","map-3","icon_location_home","icon_location_gym","map-nightcity","location_myroom-0","location_myroom-1","location_myroom-2","location_myroom-3","location_aliceroom-0","location_aliceroom-1","location_aliceroom-2","location_aliceroom-3","location_annroom-0","location_annroom-1","location_annroom-2","location_annroom-3","location_bathroom","location_lounge-0","location_lounge-1","location_lounge-2","location_lounge-3","location_terrace-0","location_terrace-1","location_terrace-2","location_terrace-3","location_gym","alice_terrace0A","alice_terrace0At","alice_roomsleep0A"] as const;
+export const assetAliasIdsEnum = {"audio_garden-ambience":"audio_garden-ambience","garden-ambience":"garden-ambience","images_main-menu":"images_main-menu","main-menu":"main-menu","map-0":"map-0","map-1":"map-1","map-2":"map-2","map-3":"map-3","icon_location_home":"icon_location_home","icon_location_gym":"icon_location_gym","map-nightcity":"map-nightcity","location_myroom-0":"location_myroom-0","location_myroom-1":"location_myroom-1","location_myroom-2":"location_myroom-2","location_myroom-3":"location_myroom-3","location_aliceroom-0":"location_aliceroom-0","location_aliceroom-1":"location_aliceroom-1","location_aliceroom-2":"location_aliceroom-2","location_aliceroom-3":"location_aliceroom-3","location_annroom-0":"location_annroom-0","location_annroom-1":"location_annroom-1","location_annroom-2":"location_annroom-2","location_annroom-3":"location_annroom-3","location_bathroom":"location_bathroom","location_lounge-0":"location_lounge-0","location_lounge-1":"location_lounge-1","location_lounge-2":"location_lounge-2","location_lounge-3":"location_lounge-3","location_terrace-0":"location_terrace-0","location_terrace-1":"location_terrace-1","location_terrace-2":"location_terrace-2","location_terrace-3":"location_terrace-3","location_gym":"location_gym","alice_terrace0A":"alice_terrace0A","alice_terrace0At":"alice_terrace0At","alice_roomsleep0A":"alice_roomsleep0A"} as const;
