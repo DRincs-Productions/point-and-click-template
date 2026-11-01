@@ -1,3 +1,4 @@
+import type { PixiUIParam, PixiUIProp } from "@/models/ui-elements";
 import {
     type ActivityInterface,
     type LocationInterface,
@@ -6,7 +7,6 @@ import {
     type OnRunProps,
     type RoomInterface,
 } from "@drincs/nqtr";
-import type { PixiUIParam, PixiUIProp } from "./ui-elements";
 
 export default class Location extends LocationStoredClass implements LocationInterface {
     constructor(

@@ -1,16 +1,16 @@
 {
   "bundles": [
     {
-      "name": "images",
+      "name": "audio",
       "assets": [
         {
           "alias": [
-            "images_main-menu",
-            "main-menu"
+            "audio_garden-ambience",
+            "garden-ambience"
           ],
           "src": [
-            "images/main-menu-QVRZMw.webp",
-            "images/main-menu-7bLsRQ.jpg"
+            "audio/garden-ambience-q5n4.mp3",
+            "audio/garden-ambience-jvAORw.ogg"
           ],
           "data": {
             "tags": {}

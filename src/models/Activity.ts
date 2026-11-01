@@ -1,3 +1,4 @@
+import type { PixiUIParam, PixiUIProp, ReactUIParam, ReactUIProp } from "@/models/ui-elements";
 import {
     type ActiveScheduling,
     type ActivityInterface,
@@ -7,7 +8,6 @@ import {
     type OnRunEvent,
     type OnRunProps,
 } from "@drincs/nqtr";
-import type { PixiUIParam, PixiUIProp, ReactUIParam, ReactUIProp } from "./ui-elements";
 
 export default class Activity extends ActivityStoredClass implements ActivityInterface {
     constructor(

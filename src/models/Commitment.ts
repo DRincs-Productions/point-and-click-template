@@ -1,3 +1,4 @@
+import type { PixiUIParam, PixiUIProp, ReactUIParam, ReactUIProp } from "@/models/ui-elements";
 import {
     CommitmentStoredClass,
     type ActiveScheduling,
@@ -8,7 +9,6 @@ import {
     type OnRunProps,
 } from "@drincs/nqtr";
 import { narration, type CharacterIdType, type CharacterInterface } from "@drincs/pixi-vn";
-import type { PixiUIParam, PixiUIProp, ReactUIParam, ReactUIProp } from "./ui-elements";
 
 export default class Commitment extends CommitmentStoredClass implements CommitmentInterface {
     constructor(

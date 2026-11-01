@@ -1,6 +1,6 @@
 import { mcRoom, terrace } from "@/content/rooms";
-import Quest from "@/models/nqtr/Quest";
-import Stage from "@/models/nqtr/Stage";
+import Quest from "@/models/Quest";
+import Stage from "@/models/Stage";
 import { RegisteredQuests } from "@drincs/nqtr";
 
 export const aliceQuest = new Quest(
