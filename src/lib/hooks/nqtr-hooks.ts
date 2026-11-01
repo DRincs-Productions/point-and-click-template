@@ -61,7 +61,12 @@ export function useRoomLayerSync() {
         let player: Awaited<ReturnType<typeof sound.unsaved.playTransient>> | undefined;
 
         sound.unsaved
-            .playTransient(soundAlias, { channel: BGM_CHANNEL_NAME, loop: true })
+            .playTransient(soundAlias, {
+                channel: BGM_CHANNEL_NAME,
+                loop: true,
+                fadeIn: 1.5,
+                fadeOut: 1.5,
+            })
             .then((startedPlayer) => {
                 if (cancelled) {
                     startedPlayer.stop();
