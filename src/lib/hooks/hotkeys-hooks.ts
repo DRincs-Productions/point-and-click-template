@@ -1,10 +1,10 @@
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
+import useTimeTracker from "@/lib/hooks/nqtr-hooks";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
-import useTimeTracker from "@/lib/hooks/nqtr-hooks";
-import { useGameProps } from "@/lib/hooks/props-hooks";
 import { CURRENT_MAP_USE_QUERY_KEY } from "@/lib/query/map-query";
+import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryCanGoNext, useQueryInputValue } from "@/lib/query/narration-query";
 import { CURRENT_ROOM_ID_USE_QUERY_KEY } from "@/lib/query/room-query";
 import {
@@ -17,7 +17,7 @@ import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
-import { getSaveSlotLabel, loadSave, quickSaveGameToIndexDB } from "@/lib/utils/save-utility";
+import { quickSave as performQuickSave, save } from "@/lib/utils/save-utility";
 import { navigator, type RoomIdType } from "@drincs/nqtr";
 import { narration } from "@drincs/pixi-vn";
 import type { RegisterableHotkey } from "@tanstack/hotkeys";
@@ -78,7 +78,7 @@ export function useSaveHotkeys(): null {
             console.log("Can't save on home page");
             return;
         }
-        const savePromise = quickSaveGameToIndexDB().then((save) => {
+        const savePromise = performQuickSave().then((save) => {
             queryClient.setQueryData([SAVES_USE_QUERY_KEY, save.id], save);
             queryClient.setQueryData([LAST_SAVE_USE_QUERY_KEY], save);
         });
@@ -97,10 +97,11 @@ export function useSaveHotkeys(): null {
         openAlertDialog({
             head: t("load"),
             content: t("you_sure_to_load_save", {
-                name: lastSave.name || getSaveSlotLabel(lastSave.id, t),
+                name: lastSave.name || save.getSlotLabel(lastSave.id, t),
             }),
             onConfirm: () =>
-                loadSave(lastSave)
+                save
+                    .restore(lastSave)
                     .then(() => {
                         gameProps.invalidateInterfaceData();
                         toast.success(t("success_load"));
@@ -507,12 +508,14 @@ export function useActivitiesHotkey() {
         const items = getMenuItems();
         if (!items.length) return;
         const currentIndex = items.indexOf(document.activeElement as HTMLButtonElement);
-        let next: number;
-        if (direction === "down") {
-            next = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        } else {
-            next = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        }
+        const next =
+            direction === "down"
+                ? currentIndex < items.length - 1
+                    ? currentIndex + 1
+                    : 0
+                : currentIndex > 0
+                  ? currentIndex - 1
+                  : items.length - 1;
         items[next].focus();
     }
 
@@ -525,20 +528,12 @@ export function useActivitiesHotkey() {
         {
             hotkey: "ArrowDown",
             callback: () => focusMenuItem("down"),
-            options: {
-                enabled: !isAnyMenuOrDialogOpen,
-                meta,
-                preventDefault: true,
-            },
+            options: { enabled: !isAnyMenuOrDialogOpen, meta, preventDefault: true },
         },
         {
             hotkey: "ArrowUp",
             callback: () => focusMenuItem("up"),
-            options: {
-                enabled: !isAnyMenuOrDialogOpen,
-                meta,
-                preventDefault: true,
-            },
+            options: { enabled: !isAnyMenuOrDialogOpen, meta, preventDefault: true },
         },
     ]);
 
