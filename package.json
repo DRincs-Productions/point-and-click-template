@@ -1,6 +1,6 @@
 {
-  "name": "my-app-package-name",
-  "description": "my-app-description",
+  "name": "point-and-click-example",
+  "description": "Point & Click Example",
   "version": "0.1.0",
   "type": "module",
   "license": "GPL-3.0",

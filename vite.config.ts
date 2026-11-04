@@ -68,9 +68,9 @@ export default defineConfig(({ mode }) => ({
             // generate icons with: npm run icon
             includeAssets: ["favicon.ico", "apple-touch-icon-180x180.png"],
             manifest: {
-                name: "my-app-project-name",
+                name: "Point & Click Example",
                 short_name: "Point & Click Example",
-                description: "my-app-description",
+                description: "Point & Click Example",
                 theme_color: "#ffffff",
                 start_url: "/",
                 display: "fullscreen",
