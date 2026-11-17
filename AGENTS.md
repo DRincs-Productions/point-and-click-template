@@ -13,6 +13,9 @@ Consult the official Pixi’VN documentation when implementing or changing engin
 
 ## Project structure
 
+- `src/pixi-vn.d.ts`: game-specific Pixi?VN type extensions.
+- `src/nqtr.d.ts`: game-specific NQTR interface extensions.
+
 Application code lives in `src/`.
 
 - `src/assets/`: game assets such as images, audio, and video. Follow the asset manifest and loading system already in place; when adding or moving assets, update the required manifests or configuration.
@@ -20,7 +23,7 @@ Application code lives in `src/`.
 - `src/components/`: all other React components, including screens, menus, dialogs, and providers.
 - `src/content/`: TypeScript modules that define and register game content and elements, such as characters, labels/scenes, and related logic. Follow the registration flow configured in `vite.config.ts` and the Pixi’VN plugin files.
 - `src/content/labels/`: labels (scenes) of the game, one module per label or group of related labels.
-- `src/content/quest/`: quests of the game. It is recommended to create one file for each quest.
+- `src/content/quests/`: quests of the game. It is recommended to create one file for each quest.
 - `src/locales/`: translation files. Keep keys consistent across supported languages and add translations to the existing i18n configuration.
 - `src/routes/`: game routes and screens managed by the router. Handle generated router files according to the generator configuration in the project.
 - `docs/`: game documentation. This directory may initially be empty; organize its contents into subdirectories by topic, such as story and endings, objectives and missions, characters, locations, items, and minigames. Do not document assets here; manage them in their dedicated directories and manifests.
@@ -154,3 +157,4 @@ To include the library in the final installer you need to tell Tauri to bundle i
 ```
 
 Tauri v2 merges the matching file into `tauri.conf.json` automatically at build time. Create only the files for the platforms you want to distribute on — one, two, or all three.
+
