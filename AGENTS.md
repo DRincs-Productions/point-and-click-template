@@ -58,6 +58,7 @@ The `.vscode/` directory contains formatting settings, recommended extensions, t
 - For UI made of elements that are not drawings coming from media (text, buttons, layouts, menus, dialogs, forms), always use **React** (with the existing shadcn/ui components when suitable).
 - For images (assets), use **PixiJS** (`pixi.js`) directly. Do not use Pixi’VN for UI: Pixi’VN is for the narrative canvas, while UI rendering with PixiJS must go through `pixi.js` itself.
 - If `pixi.js` is used directly and is not yet a direct dependency of the project, add it to `package.json` first, before writing code that imports it.
+- For UI design, polish, and motion, use the **`pixi-vn-ui`** skill (how UI layers sit on top of the Pixi’VN canvas) together with the **Emil Kowalski** skills (`emil-design-eng` and its animation skills) and **`impeccable`** (layout, typography, color, UX review, accessibility) when they are available.
 - NQTR elements (locations, activities, commitments, and similar) can be given a visual representation in the navigation screens through two distinct fields:
   - `sprite`: the **PixiJS** element (for example a `Sprite` created with `pixi.js`, or a function returning it) or directly the **alias of the asset** to display. Use it for images coming from media.
   - `icon`: a **React** element (or a function returning one). Use it for UI made of React components rather than media.
